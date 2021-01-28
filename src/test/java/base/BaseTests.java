@@ -23,6 +23,7 @@ public class BaseTests {
     public void navigateToHomePage() {
         driver.manage().deleteAllCookies();
         driver.get("https://the-internet.herokuapp.com/");
+        driver.manage().window().maximize();
         homePage = new HomePage(driver);
     }
 

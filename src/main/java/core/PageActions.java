@@ -1,6 +1,7 @@
 package core;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -50,6 +51,23 @@ public class PageActions {
 
     public void uploadFileUsingAbsolutePath(WebDriver driver, By findElementBy, String absolutePathOfFile) {
         driver.findElement(findElementBy).sendKeys(absolutePathOfFile);
+    }
+
+    public void scrollToElement(WebElement element) {
+        String script = "arguments[0].scrollIntoView();";
+        ((JavascriptExecutor) driver).executeScript(script, element);
+    }
+
+    private void executeJavaScriptCode(String script) {
+        ((JavascriptExecutor) driver).executeScript(script);
+    }
+
+    public void scrollPageVertically() {
+        executeJavaScriptCode("window.scrollTo(0, document.body.scrollHeight)");
+    }
+
+    public void scrollPageHorizontally() {
+        executeJavaScriptCode("window.scrollTo(document.body.scrollWidth, 0)");
     }
 
 }
