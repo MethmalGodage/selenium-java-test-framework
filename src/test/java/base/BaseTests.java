@@ -1,10 +1,12 @@
 package base;
 
 import com.google.common.io.Files;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
@@ -24,13 +26,13 @@ public class BaseTests {
     @BeforeClass
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", "resources/chromedriver_87");
-        driver = new EventFiringWebDriver(new ChromeDriver());
+        driver = new EventFiringWebDriver(new ChromeDriver(getChromeOptions()));
         navigateToHomePage();
     }
 
     @BeforeMethod
     public void navigateToHomePage() {
-        driver.manage().deleteAllCookies();
+        deleteAllCookies();
         driver.get("https://the-internet.herokuapp.com/");
         driver.manage().window().maximize();
         homePage = new HomePage(driver);
@@ -52,8 +54,27 @@ public class BaseTests {
     @AfterClass
     public void tearDown() {
         if (driver != null) {
-            driver.manage().deleteAllCookies();
+            deleteAllCookies();
             driver.quit();
         }
     }
+
+    private void deleteAllCookies() {
+        driver.manage().deleteAllCookies();
+    }
+
+    private ChromeOptions getChromeOptions() {
+
+        boolean isHeadless = false;
+        boolean isDisableInfoBars = true;
+
+        ChromeOptions options = new ChromeOptions();
+
+        if (isDisableInfoBars) {
+            options.addArguments("disable-infobars");
+        }
+        options.setHeadless(isHeadless);
+        return options;
+    }
+
 }
