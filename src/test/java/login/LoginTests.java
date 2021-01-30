@@ -10,7 +10,7 @@ import static org.testng.Assert.assertTrue;
 public class LoginTests extends BaseTests {
 
     @Test
-    public void testSuccessfulLogin() {
+    public void verifySuccessfulLogin() {
         LoginPage loginPage = homePage.clickFormAuthentication();
         loginPage.setUsername("tomsmith");
         loginPage.setPassword("SuperSecretPassword!");
