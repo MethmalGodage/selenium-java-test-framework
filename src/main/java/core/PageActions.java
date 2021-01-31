@@ -1,5 +1,7 @@
 package core;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -10,10 +12,13 @@ import java.util.concurrent.TimeUnit;
 
 public class PageActions {
 
+    protected static Logger log;
     public WebDriver driver;
 
     public PageActions(WebDriver driver) {
+        log = LogManager.getLogger(PageActions.class.getName());
         this.driver = driver;
+        log.debug("Initiated the web driver.");
     }
 
     public void hoverElement(WebDriver driver, WebElement element) {
