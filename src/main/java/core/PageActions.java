@@ -18,7 +18,6 @@ public class PageActions {
     public PageActions(WebDriver driver) {
         log = LogManager.getLogger(PageActions.class.getName());
         this.driver = driver;
-        log.debug("Initiated the web driver.");
     }
 
     public void hoverElement(WebDriver driver, WebElement element) {
