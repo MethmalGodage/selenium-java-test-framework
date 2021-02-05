@@ -1,3 +1,9 @@
 # Selenium-Java-Test-Framework
 
-This is a test framework build using Java, Selenium web driver, TestNG, log4J and allure reporting.
+Used technologies:
+  * Selenium WebDriver
+  * Java 8
+  * Maven
+  * TestNG
+  * Allure Reporting
+  * Log4J Logging
