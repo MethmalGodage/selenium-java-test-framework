@@ -21,9 +21,9 @@ import java.io.IOException;
 
 public class BaseTests {
 
+    protected static Logger log;
     protected HomePage homePage;
     private WebDriver driver;
-    protected static Logger log;
 
     public BaseTests() {
         log = LogManager.getLogger(BaseTests.class.getName());

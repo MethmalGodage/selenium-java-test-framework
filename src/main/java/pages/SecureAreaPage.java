@@ -13,7 +13,9 @@ public class SecureAreaPage extends PageActions {
     }
 
     public String getAlertText() {
-        return driver.findElement(statusAlert).getText();
+        String statusAlertText = driver.findElement(statusAlert).getText();
+        log.info("Status Alert text is: '" + statusAlertText + "'.");
+        return statusAlertText;
     }
 
 }
