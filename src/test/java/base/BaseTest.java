@@ -121,13 +121,13 @@ public class BaseTest {
 
     private String getOperatingSystem() {
         String os = System.getProperty("os.name");
-        log.debug("Detected the system OS: " + os);
+        log.debug("Detected the system OS: " + os.toUpperCase());
         return os;
     }
 
     private String getPreferredWebBrowser() {
         String browser = coreConfig.getProperty("browser");
-        log.debug("Preferred web browser: " + browser);
+        log.debug("Configured web Browser: " + browser);
         return browser.toUpperCase();
     }
 
