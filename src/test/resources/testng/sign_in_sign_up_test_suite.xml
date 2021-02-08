@@ -4,7 +4,7 @@
 
     <test thread-count="1" name="LoginTests">
         <classes>
-            <class name="login.LoginTests">
+            <class name="login.LoginTest">
                 <methods>
                     <include name="verifySuccessfulLogin"/>
                 </methods>
