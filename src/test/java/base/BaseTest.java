@@ -125,7 +125,7 @@ public class BaseTest {
         return os;
     }
 
-    private String getPreferredWebBrowser() {
+    private String getConfiguredWebBrowser() {
         String browser = coreConfig.getProperty("browser");
         log.debug("Configured web Browser: " + browser);
         return browser.toUpperCase();
@@ -134,7 +134,7 @@ public class BaseTest {
     private void setWebDriver() {
         switch (getOperatingSystem()) {
             case "Windows 10":
-                switch (getPreferredWebBrowser()) {
+                switch (getConfiguredWebBrowser()) {
                     case "CHROME":
                         System.setProperty("webdriver.chrome.driver", "resources/webdrivers/chrome/chromedriver.exe");
                         driver = new EventFiringWebDriver(new ChromeDriver(getChromeOptions()));
@@ -155,7 +155,7 @@ public class BaseTest {
                 break;
             case "Linux":
             default:
-                switch (getPreferredWebBrowser()) {
+                switch (getConfiguredWebBrowser()) {
                     case "CHROME":
                         System.setProperty("webdriver.chrome.driver", "resources/webdrivers/chrome/chromedriver_87_linux");
                         driver = new EventFiringWebDriver(new ChromeDriver(getChromeOptions()));
