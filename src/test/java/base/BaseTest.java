@@ -1,6 +1,7 @@
 package base;
 
 import com.google.common.io.Files;
+import enums.Browser;
 import enums.Environment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +30,7 @@ public class BaseTest {
     protected ConfigurationManager coreConfig;
     protected static Logger log;
     protected WebDriver driver;
-    private String browser;
+    private Browser browser;
     private Environment environment;
     protected String workingDir;
 
@@ -152,53 +153,70 @@ public class BaseTest {
     }
 
     private void setBrowser() {
-        browser = coreConfig.getProperty("browser").toUpperCase();
+        String browser = coreConfig.getProperty("browser");
+        if (coreConfig.getProperty("browser") != null) {
+            switch (browser) {
+                case "CHROME":
+                    this.browser = Browser.CHROME;
+                    log.debug("Browser: CHROME");
+                    break;
+                case "FIREFOX":
+                    this.browser = Browser.FIREFOX;
+                    log.debug("Browser: FIREFOX");
+                    break;
+                case "INTERNET_EXPLORER":
+                    this.browser = Browser.IE;
+                    log.debug("Browser: INTERNET_EXPLORER");
+                    break;
+                case "SAFARI":
+                    this.browser = Browser.SAFARI;
+                    log.debug("Browser: SAFARI");
+                    break;
+                default:
+                    this.browser = Browser.FIREFOX;
+                    log.warn("There is a problem with the browser configurations. Please check the configurations again! Browser set to FIREFOX by default configurations.");
+                    break;
+            }
+        }
     }
 
     private void setWebDriver() {
         if (SystemUtils.IS_OS_WINDOWS) {
             log.debug("Operating System: WINDOWS");
             switch (browser) {
-                case "CHROME":
+                case CHROME:
                     System.setProperty("webdriver.chrome.driver", "resources/webdrivers/chrome/chromedriver.exe");
                     driver = new EventFiringWebDriver(new ChromeDriver(getChromeOptions()));
-                    log.debug("Web Browser: CHROME");
                     break;
-                case "INTERNET_EXPLORER":
+                case IE:
                     System.setProperty("webdriver.ie.driver", "resources/webdrivers/internetexplorer/IEDriverServer.exe");
                     driver = new EventFiringWebDriver(new InternetExplorerDriver());
-                    log.debug("Web Browser: INTERNET EXPLORER");
                     break;
-                case "FIREFOX":
+                case FIREFOX:
                 default:
                     log.warn("There is a problem with the browser configurations. Please check the configurations again! Browser set to firefox by default configurations.");
                     System.setProperty("webdriver.gecko.driver", "resources/webdrivers/firefox/geckodriver.exe");
                     driver = new EventFiringWebDriver(new FirefoxDriver(getFirefoxOptions()));
-                    log.debug("Web Browser: FIREFOX");
                     break;
             }
         } else if (SystemUtils.IS_OS_MAC_OSX) {
             log.debug("Operating System: MAC OSX");
             driver = new EventFiringWebDriver(new SafariDriver());
-            log.debug("Web Browser: SAFARI");
         } else if (SystemUtils.IS_OS_MAC) {
             log.debug("Operating System: MAC OS");
             driver = new EventFiringWebDriver(new SafariDriver());
-            log.debug("Web Browser: SAFARI");
         } else if (SystemUtils.IS_OS_LINUX) {
             log.debug("Operating System: LINUX");
             switch (browser) {
-                case "CHROME":
+                case CHROME:
                     System.setProperty("webdriver.chrome.driver", "resources/webdrivers/chrome/chromedriver_87_linux");
                     driver = new EventFiringWebDriver(new ChromeDriver(getChromeOptions()));
-                    log.debug("Web Browser: CHROME");
                     break;
-                case "FIREFOX":
+                case FIREFOX:
                 default:
                     log.warn("There is a problem with the browser configurations. Please check the configurations again! Browser set to firefox by default configurations.");
                     System.setProperty("webdriver.gecko.driver", "resources/webdrivers/firefox/geckodriver_linux");
                     driver = new EventFiringWebDriver(new FirefoxDriver(getFirefoxOptions()));
-                    log.debug("Web Browser: FIREFOX");
                     break;
             }
         } else {
