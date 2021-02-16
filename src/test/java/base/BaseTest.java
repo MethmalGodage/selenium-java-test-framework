@@ -3,19 +3,18 @@ package base;
 import com.google.common.io.Files;
 import enums.Browser;
 import enums.Environment;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tika.utils.SystemUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.safari.SafariDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -24,6 +23,8 @@ import utilities.ConfigurationManager;
 
 import java.io.File;
 import java.io.IOException;
+
+import static io.github.bonigarcia.wdm.config.DriverManagerType.*;
 
 public class BaseTest {
 
@@ -168,9 +169,9 @@ public class BaseTest {
                     this.browser = Browser.IE;
                     log.debug("Browser: INTERNET_EXPLORER");
                     break;
-                case "SAFARI":
-                    this.browser = Browser.SAFARI;
-                    log.debug("Browser: SAFARI");
+                case "EDGE":
+                    this.browser = Browser.EDGE;
+                    log.debug("Browser: EDGE");
                     break;
                 default:
                     this.browser = Browser.FIREFOX;
@@ -181,47 +182,24 @@ public class BaseTest {
     }
 
     private void setWebDriver() {
-        if (SystemUtils.IS_OS_WINDOWS) {
-            log.debug("Operating System: WINDOWS");
-            switch (browser) {
-                case CHROME:
-                    System.setProperty("webdriver.chrome.driver", "resources/webdrivers/chrome/chromedriver.exe");
-                    driver = new EventFiringWebDriver(new ChromeDriver(getChromeOptions()));
-                    break;
-                case IE:
-                    System.setProperty("webdriver.ie.driver", "resources/webdrivers/internetexplorer/IEDriverServer.exe");
-                    driver = new EventFiringWebDriver(new InternetExplorerDriver());
-                    break;
-                case FIREFOX:
-                default:
-                    log.warn("There is a problem with the browser configurations. Please check the configurations again! Browser set to firefox by default configurations.");
-                    System.setProperty("webdriver.gecko.driver", "resources/webdrivers/firefox/geckodriver.exe");
-                    driver = new EventFiringWebDriver(new FirefoxDriver(getFirefoxOptions()));
-                    break;
-            }
-        } else if (SystemUtils.IS_OS_MAC_OSX) {
-            log.debug("Operating System: MAC OSX");
-            driver = new EventFiringWebDriver(new SafariDriver());
-        } else if (SystemUtils.IS_OS_MAC) {
-            log.debug("Operating System: MAC OS");
-            driver = new EventFiringWebDriver(new SafariDriver());
-        } else if (SystemUtils.IS_OS_LINUX) {
-            log.debug("Operating System: LINUX");
-            switch (browser) {
-                case CHROME:
-                    System.setProperty("webdriver.chrome.driver", "resources/webdrivers/chrome/chromedriver_87_linux");
-                    driver = new EventFiringWebDriver(new ChromeDriver(getChromeOptions()));
-                    break;
-                case FIREFOX:
-                default:
-                    log.warn("There is a problem with the browser configurations. Please check the configurations again! Browser set to firefox by default configurations.");
-                    System.setProperty("webdriver.gecko.driver", "resources/webdrivers/firefox/geckodriver_linux");
-                    driver = new EventFiringWebDriver(new FirefoxDriver(getFirefoxOptions()));
-                    break;
-            }
-        } else {
-            log.debug("Test Framework doesn't support with this OS '" + System.getProperty("os.name") + "'");
-            driver = null;
+        switch (browser) {
+            case CHROME:
+                WebDriverManager.getInstance(CHROME).setup();
+                driver = new ChromeDriver(getChromeOptions());
+                break;
+            case IE:
+                WebDriverManager.getInstance(IEXPLORER).setup();
+                driver = new InternetExplorerDriver();
+                break;
+            case EDGE:
+                WebDriverManager.getInstance(EDGE).setup();
+                driver = new EdgeDriver();
+                break;
+            case FIREFOX:
+            default:
+                WebDriverManager.getInstance(FIREFOX).setup();
+                driver = new FirefoxDriver(getFirefoxOptions());
+                break;
         }
     }
 
