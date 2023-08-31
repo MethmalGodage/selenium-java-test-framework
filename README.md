@@ -11,9 +11,9 @@ Eg: mvn clean install -DspecificTest=sign_in_sign_up_test_suite.xml -Dtestng.dtd
 
 Used technologies:
 
-* Selenium WebDriver
+* Selenium WebDriver 4
 * Java 8
 * Maven
-* TestNG
+* TestNG 7
 * Allure2 for Reporting
 * Log4J2 for Logging
